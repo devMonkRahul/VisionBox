@@ -50,6 +50,22 @@ visionbox/
 
 ## Installation
 
+### Option 1: Using uv
+
+If you have `uv` installed, set up the project with:
+
+```bash
+uv sync
+```
+
+Run the app with:
+
+```bash
+uv run streamlit run app.py
+```
+
+### Option 2: Using pip
+
 Create and activate a virtual environment if you want to keep dependencies separate.
 
 ```bash
@@ -75,6 +91,14 @@ pip install -r requirements.txt
 ```
 
 ## Run The App
+
+If you used `uv`, run:
+
+```bash
+uv run streamlit run app.py
+```
+
+If you used `pip`, run:
 
 ```bash
 streamlit run app.py
