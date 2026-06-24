@@ -1,6 +1,6 @@
-# VisionBox - Real-Time Object Detector
+# VisionBox - Animal Detector
 
-VisionBox is a beginner-friendly Computer Vision project for first-year engineering students. It uses a pretrained YOLO11 model to detect everyday objects in images through a simple Streamlit web application.
+VisionBox is a beginner-friendly Computer Vision project for first-year engineering students. It uses a YOLO11 model fine-tuned on an animals dataset to detect animals **and the pose they are in** from an image, through a simple Streamlit web application.
 
 The project is designed for a 90-minute workshop: students can run the app, upload an image, see bounding boxes, read confidence scores, and understand how object detection works without training a model.
 
@@ -8,11 +8,12 @@ The project is designed for a 90-minute workshop: students can run the app, uplo
 
 - Upload JPG, JPEG, or PNG images
 - Capture a webcam snapshot using Streamlit
-- Run object detection with pretrained `yolo11n.pt`
+- Run detection with a YOLO11 model (`animals.pt`) fine-tuned on the animals dataset
+- Detect the animal **and pair it with its pose** (e.g. `cow (stand)`)
 - Display the original image and annotated image side by side
-- Show bounding boxes, object labels, and optional confidence scores
-- Count total detected objects
-- Display a detection table with class names and confidence scores
+- Show bounding boxes, animal labels, pose, and optional confidence scores
+- Count total detected animals
+- Display a detection table with class name, position, confidence, and box coordinates
 - Show the top 5 detections
 - Show simple statistics:
   - Number of detections
@@ -20,18 +21,27 @@ The project is designed for a 90-minute workshop: students can run the app, uplo
   - Highest confidence prediction
 - Download the annotated result image
 
-## Supported Objects
+## Supported Classes
 
-VisionBox uses the default COCO classes supported by YOLO11. Common examples include:
+The model is trained on 10 classes, split into **animals** and **poses**:
 
-- Person
-- Car
-- Dog
-- Cat
-- Bottle
-- Cell phone
-- Chair
-- Laptop
+| Animals | Poses |
+| ------- | ----- |
+| cat     | eating |
+| cow     | laying |
+| dog     | run    |
+| horse   | sit    |
+| sheep   | stand  |
+
+The detector pairs each pose with the animal whose bounding box it overlaps most, and folds it into a `Position` column. When no pose is detected for an animal, `Position` is left empty.
+
+## Dataset
+
+The model is trained on the **Animals (animals-p1cov)** dataset from Roboflow Universe.
+
+- Dataset page: <https://universe.roboflow.com/sesese/animals-p1cov/dataset/3>
+- Download (YOLOv11 format): <https://universe.roboflow.com/sesese/animals-p1cov/dataset/3/download/yolov11>
+- Workspace: `sesese` · Project: `animals-p1cov` · Version: `3` · License: CC BY 4.0
 
 ## Folder Structure
 
@@ -39,10 +49,10 @@ VisionBox uses the default COCO classes supported by YOLO11. Common examples inc
 visionbox/
 |
 ├── app.py
+├── animals.pt
 ├── requirements.txt
 ├── README.md
 ├── assets/
-│   └── sample_image.jpg
 └── utils/
     ├── detector.py
     └── helpers.py
@@ -104,7 +114,7 @@ If you used `pip`, run:
 streamlit run app.py
 ```
 
-The first run may take a little longer because Ultralytics downloads the pretrained `yolo11n.pt` model.
+Make sure `animals.pt` is present in the project root so the app can load the fine-tuned model.
 
 ## How To Use
 
@@ -112,17 +122,8 @@ The first run may take a little longer because Ultralytics downloads the pretrai
 2. Upload an image or capture a webcam snapshot.
 3. Adjust the confidence threshold in the sidebar.
 4. Click **Run object detection**.
-5. View the annotated image, object count, detection table, and statistics.
+5. View the annotated image, object count, detection table (with the paired pose), and statistics.
 6. Download the annotated image if needed.
-
-## Screenshots
-
-Add workshop screenshots here after running the app:
-
-```text
-assets/screenshot_home.png
-assets/screenshot_results.png
-```
 
 ## Workshop Notes
 
@@ -132,9 +133,9 @@ This project is useful for explaining:
 - What object detection does
 - The difference between classification and detection
 - Bounding boxes
-- Class labels
+- Class labels and how multiple classes (animal + pose) can describe one subject
 - Confidence scores
-- Why pretrained models are useful
+- Why fine-tuned models are useful
 
 ## Future Improvements
 
