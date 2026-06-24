@@ -135,7 +135,7 @@ def main() -> None:
         show_count = st.toggle("Show object count", value=True)
 
         st.divider()
-        st.caption("Model: YOLO11 nano pretrained on COCO classes")
+        st.caption("Model: YOLO11 nano pretrained on COCO classes and fine-tuned on animal datasets. For the dataset link [click here](https://universe.roboflow.com/sesese/animals-p1cov/dataset/3/download/yolov11).")
 
     st.subheader("1. Add an Image")
     input_mode = st.tabs(["📁 Upload image", "📷 Webcam capture"])
