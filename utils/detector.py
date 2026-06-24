@@ -12,7 +12,7 @@ from ultralytics import YOLO
 @lru_cache(maxsize=1)
 def load_model() -> YOLO:
     """Load the pretrained YOLO11 nano model only once."""
-    return YOLO("best.pt")
+    return YOLO("animals.pt")
 
 
 def detect_objects(image: Image.Image, confidence: float):
